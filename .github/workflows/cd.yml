@@ -104,7 +104,7 @@ jobs:
       - name: Connect server and pull image Backend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
-          ssh -tt -o StrictHostKeyChecking=no -i ~/.ssh/key.pem ${{ secrets.SSH_USER }}@${{ INSTANCE_PUBLIC_DNS }} << EOF
+          ssh -tt -o StrictHostKeyChecking=no -i ~/.ssh/key.pem ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           docker pull $REPOSITORY
           docker run --name backend_savetofocus \
           -p 1337:1337 \
