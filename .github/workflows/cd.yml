@@ -99,6 +99,7 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
+          export INSTANCE_PUBLIC_IPV4=${{ env.INSTANCE_PUBLIC_IPV4 }}
           sudo yum install -y docker
           sudo service docker start
           docker pull REPOSITORYBACK
@@ -106,13 +107,13 @@ jobs:
           -p 1337:1337 \
           -e HOST=0.0.0.0 \
           -e PORT=1337 \
-          -e STRAPI_ADMIN_CLIENT_URL=http://${ env.INSTANCE_PUBLIC_IPV4 }:3000/ \
+          -e STRAPI_ADMIN_CLIENT_URL=http://${ INSTANCE_PUBLIC_IPV4 }:3000/ \
           -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
           -d
           docker pull REPOSITORYFRONT
           docker run --name frontend_savetofocus savetofocus_frontend \
           -p 3000:3000 \
-          -e NEXT_PUBLIC_API_URL= http://${ env.INSTANCE_PUBLIC_IPV4 }:1337/\
+          -e NEXT_PUBLIC_API_URL= http://${ INSTANCE_PUBLIC_IPV4 }:1337/\
           -e PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
           -d
           EOF
