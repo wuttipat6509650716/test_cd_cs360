@@ -90,15 +90,21 @@ jobs:
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
           echo "INSTANCE_PUBLIC_IPV4=$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
 
+          echo "ENV_GITHUB"
+          echo "DNS : $env.INSTANCE_PUBLIC_DNS"
+          echo "ipv4 : $env.INSTANCE_PUBLIC_IPV4"
+          
+
       - name: Add SSH Key
         run: |
-          echo "${{ secrets.AWS_KEY_PEM }}" > key.pem
-          chmod 600 key.pem    
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/key.pem
+          chmod 600 ~/.ssh/key.pem    
           
       - name: Connect server and pull image Backend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
-          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
+          ssh -tt -o StrictHostKeyChecking=no -i ~/.ssh/key.pem ${{ secrets.SSH_USER }}@${{ INSTANCE_PUBLIC_DNS }} << EOF
           docker pull $REPOSITORY
           docker run --name backend_savetofocus \
           -p 1337:1337 \
