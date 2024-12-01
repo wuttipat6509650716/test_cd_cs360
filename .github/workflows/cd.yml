@@ -96,7 +96,7 @@ jobs:
           
       - name: Connect server and pull image Backend
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > key
+          echo "${{ secrets.AWS_KEY_PEM }}" > key
           chmod 600 key
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
           ssh -o StrictHostKeyChecking=no -i key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
