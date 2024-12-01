@@ -88,7 +88,7 @@ jobs:
             --query 'Reservations[0].Instances[0].PublicIpAddress' \
             --output text)
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
-          echo "$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
+          echo "INSTANCE_PUBLIC_IPV4: $INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
           
       - name: Connect server and pull image Backend
         env:
