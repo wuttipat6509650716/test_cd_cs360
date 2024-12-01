@@ -99,8 +99,8 @@ jobs:
             PRIVATE_KEY: ${{ secrets.AWS_KEY_PEM }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
+          REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
           docker pull $REPOSITORY
           docker run --name backend_savetofocus \
           -p 1337:1337 \
