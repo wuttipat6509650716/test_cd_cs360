@@ -101,6 +101,8 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
+          sudo yum install -y docker
+          sudo service docker start
           docker pull $REPOSITORY
           docker run --name backend_savetofocus \
           -p 1337:1337 \
