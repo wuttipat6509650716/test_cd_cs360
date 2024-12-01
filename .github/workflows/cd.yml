@@ -89,11 +89,16 @@ jobs:
             --output text)
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
           echo "INSTANCE_PUBLIC_IPV4=$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
+
+      - name: Add SSH Key
+        run: |
+          echo "${{ secrets.AWS_KP_NAME }}" > key.pem
+          chmod 600 key.pem    
           
       - name: Connect server and pull image Backend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
-          ssh ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
+          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           docker pull $REPOSITORY
           docker run --name backend_savetofocus \
           -p 1337:1337 \
@@ -108,7 +113,7 @@ jobs:
       - name: Connect server and pull image Frontend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_frontend"
-          ssh ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
+          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           docker pull $REPOSITORY
           docker run --name frontend_savetofocus \
           -p 3000:3000 \
