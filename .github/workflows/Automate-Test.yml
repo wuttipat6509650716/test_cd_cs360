@@ -1,0 +1,50 @@
+name: Api CI
+
+on:
+  # push:
+  #   branches: 
+  #     - '*'
+  # pull_request:
+  #   branches:
+  #     - '*'
+  workflow_dispatch:
+
+  
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest] 
+        node-version: [16.x, 18.x]
+      fail-fast: false
+    
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Install Dependencies
+      working-directory: ./api
+      run: yarn
+
+    - name: Seed Data
+      working-directory: ./api
+      run: yarn seed   
+
+    - name: Set up Environment Variables and test
+      working-directory: ./api
+      env:
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      run: |
+        echo "Environment variables set" 
+        yarn test
