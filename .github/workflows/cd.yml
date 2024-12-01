@@ -92,7 +92,7 @@ jobs:
 
       - name: Add SSH Key
         run: |
-          echo "${{ secrets.AWS_KP_NAME }}" > key.pem
+          echo "${{ secrets.AWS_KEY_PEM }}" > key.pem
           chmod 600 key.pem    
           
       - name: Connect server and pull image Backend
