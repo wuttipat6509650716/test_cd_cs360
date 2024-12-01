@@ -17,7 +17,20 @@ jobs:
         
       # Step 2: Check if Docker Image Exists
       - name: Check if Docker Image Exists
-        id: check_image
+        id: check_image_backend
+        run: |
+          REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"  # Replace with your DockerHub repository name
+          TAG="latest"
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -u "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_TOKEN }}" https://hub.docker.com/v2/repositories/${REPOSITORY}/tags/${TAG}/)
+          if [ "$RESPONSE" -ne 200 ]; then
+              echo "Docker image not found. Exiting workflow."
+              exit 1
+          fi
+          echo "Docker image exists. Proceeding to deployment."
+
+      # Step 2: Check if Docker Image Exists
+      - name: Check if Docker Image Exists
+        id: check_image_frontend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"  # Replace with your DockerHub repository name
           TAG="latest"
@@ -30,7 +43,7 @@ jobs:
 
       # Step 3: Set AWS Credentials in Environment Variables
       - name: Set AWS Credentials
-        if: ${{ steps.check_image.outcome == 'success' }}
+        if: ${{ steps.check_image_backend.outcome == 'success' && steps.check_image_frontend.outcome == 'success'}}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
