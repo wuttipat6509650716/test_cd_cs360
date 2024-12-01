@@ -111,8 +111,7 @@ jobs:
           -e HOST=0.0.0.0 \
           -e PORT=1337 \
           -e STRAPI_ADMIN_CLIENT_URL=http://${INSTANCE_PUBLIC_IPV4}:3000/ \
-          -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
-          -d
+          -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s -d
           docker pull wuttipat6509650716/savetofocus_frontend:latest
           docker run --name frontend_savetofocus savetofocus_frontend \
           -p 3000:3000 \
