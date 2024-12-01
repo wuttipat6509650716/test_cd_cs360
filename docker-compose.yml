@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # กำหนดให้ service นี้คือเว็บแอปพลิเคชัน
+  web:
+    image: mysavev/savetofocus_front:latest
+    container_name: web_app
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+
+  back:
+    image: mysavev/savetofocus_backend:latest
+    container_name: backend
+    environment:
+      - HOST=web
+      - PORT=1337
+      - STRAPI_ADMIN_CLIENT_URL=http://web:3000
+      - STRAPI_ADMIN_CLIENT_PREVIEW_SECRET:ARNFCb9zrC9ZHm5hZzCigWivD40icS4s
+    
+    ports:
+      - "1337:1337"
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
+
+volumes:
+  mysql-data:

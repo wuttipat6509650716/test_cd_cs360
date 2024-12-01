@@ -1,0 +1,64 @@
+{
+  "name": "foodadvisor",
+  "private": true,
+  "version": "2.0.1",
+  "description": "Official Strapi Demo Application",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "seed": "node script/seed.js",
+    "test":"jest --runInBand --coverage=true"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "dependencies": {
+    "@ckeditor/strapi-plugin-ckeditor": "^0.0.7",
+    "@offset-dev/strapi-calendar": "^0.0.10",
+    "@strapi/plugin-graphql": "4.13.5",
+    "@strapi/plugin-i18n": "4.13.5",
+    "@strapi/plugin-seo": "^1.9.4",
+    "@strapi/plugin-users-permissions": "4.13.5",
+    "@strapi/strapi": "4.13.5",
+    "@webbio/strapi-plugin-scheduler": "^0.1.2",
+    "better-sqlite3": "^8.0.0",
+    "fs-extra": "^10.0.0",
+    "strapi-plugin-populate-deep": "^1.1.2",
+    "strapi-plugin-todo": "^0.0.9",
+    "unzip-stream": "^0.3.1",
+    "uuid-v4": "^0.1.0"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "FOODADVISOR-LOCAL-dae8a6f0-39a0-4781-90bd-058d99cfbe0b"
+  },
+  "engines": {
+    "node": ">=14.x.x <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/api/**/*.js"
+    ],
+    "coverageReporters": [
+      "clover",
+      "json",
+      "text"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".tmp",
+      ".cache"
+    ],
+    "modulePathIgnorePatterns": [
+      "./build"
+    ],
+    "testEnvironment": "node"
+  }
+}
