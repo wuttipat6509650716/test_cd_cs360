@@ -96,7 +96,7 @@ jobs:
           
       - name: Connect server and pull image Backend
         env:
-            PRIVATE_KEY: secrets.AWS_KEY_PEM
+            PRIVATE_KEY: ${{ secrets.AWS_KEY_PEM }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
