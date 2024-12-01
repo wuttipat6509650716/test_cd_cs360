@@ -62,7 +62,7 @@ jobs:
           # Define instance details
           INSTANCE_ID=$(aws ec2 run-instances \
             --image-id ami-06b21ccaeff8cd686 \
-            --instance-type t2.micro \
+            --instance-type t2.medium \
             --key-name ${{ secrets.AWS_KP_NAME }} \
             --security-group-ids ${{ secrets.AWS_SG_ID }} \
             --user-data file://user-data.sh \
@@ -80,6 +80,7 @@ jobs:
             --query 'Reservations[0].Instances[0].PublicDnsName' \
             --output text)
           echo "Instance Public DNS: $INSTANCE_PUBLIC_DNS"
+          echo "INSTANCE_PUBLIC_DNS=$INSTANCE_PUBLIC_DNS" >> $GITHUB_ENV
 
 
           INSTANCE_PUBLIC_IPV4=$(aws ec2 describe-instances \
@@ -87,11 +88,12 @@ jobs:
             --query 'Reservations[0].Instances[0].PublicIpAddress' \
             --output text)
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
+          echo "INSTANCE_PUBLIC_IPV4=$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
           
       - name: Connect server and pull image Backend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
-          ssh ${{ secrets.SSH_USER }}@${{ INSTANCE_PUBLIC_DNS }} << EOF
+          ssh ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           docker pull $REPOSITORY
           docker run --name backend_savetofocus \
           -p 1337:1337 \
@@ -106,7 +108,7 @@ jobs:
       - name: Connect server and pull image Frontend
         run: |
           REPOSITORY="${{ secrets.DOCKER_USERNAME }}/savetofocus_frontend"
-          ssh ${{ secrets.SSH_USER }}@${{ INSTANCE_PUBLIC_DNS }} << EOF
+          ssh ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           docker pull $REPOSITORY
           docker run --name frontend_savetofocus \
           -p 3000:3000 \
