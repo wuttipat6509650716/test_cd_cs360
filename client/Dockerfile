@@ -14,7 +14,7 @@ RUN yarn install
 # Copy the entire application source code
 COPY . .
 
-RUN yarn
+#RUN yarn
 
 RUN yarn build
 # Expose the port your app runs on
