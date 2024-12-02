@@ -105,18 +105,18 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           sudo yum install -y docker
           sudo service docker start
-          docker pull wuttipat6509650716/savetofocus_backend:latest
-          docker run --name backend_savetofocus savetofocus_backend \
+          docker pull $REPOSITORY:latest
+          docker run -d --name backend_savetofocus \
           -p 1337:1337 \
           -e HOST=0.0.0.0 \
           -e PORT=1337 \
           -e STRAPI_ADMIN_CLIENT_URL=http://${INSTANCE_PUBLIC_IPV4}:3000/ \
           -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
-          -d
-          docker pull wuttipat6509650716/savetofocus_frontend:latest
-          docker run --name frontend_savetofocus savetofocus_frontend \
+          $REPOSITORY:latest
+          docker pull REPOSITORYFRONT:latest
+          docker run -d --name frontend_savetofocus \
           -p 3000:3000 \
           -e NEXT_PUBLIC_API_URL= http://${INSTANCE_PUBLIC_IPV4}:1337/ \
           -e PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
-          -d
+          $REPOSITORYFRONT:latest
           EOF
