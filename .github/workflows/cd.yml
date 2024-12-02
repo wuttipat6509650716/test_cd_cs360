@@ -103,8 +103,6 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
-          sudo yum install -y docker
-          sudo service docker start
           echo "BACKEND"
           sudo docker pull $REPOSITORY:latest
           sudo docker run -d --name backend_savetofocus \
@@ -118,7 +116,7 @@ jobs:
           sudo docker pull $REPOSITORYFRONT:latest
           sudo docker run -d --name frontend_savetofocus \
           -p 3000:3000 \
-          -e NEXT_PUBLIC_API_URL= http://${INSTANCE_PUBLIC_IPV4}:1337/ \
+          -e NEXT_PUBLIC_API_URL=http://${INSTANCE_PUBLIC_IPV4}:1337/ \
           -e PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
           $REPOSITORYFRONT:latest
           EOF
