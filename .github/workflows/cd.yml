@@ -89,6 +89,7 @@ jobs:
             --output text)
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
           echo "INSTANCE_PUBLIC_IPV4=$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
+          sleep 5
            
       - name: Connect server and pull image Backend
         env:
