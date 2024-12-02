@@ -8,6 +8,8 @@ RUN yarn install
 
 COPY . .
 
+RUN yarn seed
+
 RUN yarn build
 
 EXPOSE 3000
