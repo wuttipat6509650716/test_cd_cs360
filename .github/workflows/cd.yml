@@ -89,19 +89,23 @@ jobs:
             --output text)
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
           echo "INSTANCE_PUBLIC_IPV4=$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
+
+          echo "ENV_GITHUB"
+          echo "DNS : $env.INSTANCE_PUBLIC_DNS"
+          echo "ipv4 : $env.INSTANCE_PUBLIC_IPV4"  
           
       - name: Connect server and pull image Backend
         env:
             PRIVATE_KEY: ${{ secrets.AWS_KEY_PEM }}
             #docker pull wuttipat6509650716/savetofocus_backend:latest
-            REPOSITORYBACK: "${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
+            REPOSITORY: "${{ secrets.DOCKER_USERNAME }}/savetofocus_backend"
             REPOSITORYFRONT: "${{ secrets.DOCKER_USERNAME }}/savetofocus_frontend"
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USER }}@${{ env.INSTANCE_PUBLIC_DNS }} << EOF
           sudo yum install -y docker
           sudo service docker start
-          docker pull REPOSITORYBACK
+          docker pull wuttipat6509650716/savetofocus_backend:latest
           docker run --name backend_savetofocus savetofocus_backend \
           -p 1337:1337 \
           -e HOST=0.0.0.0 \
@@ -109,10 +113,10 @@ jobs:
           -e STRAPI_ADMIN_CLIENT_URL=http://${INSTANCE_PUBLIC_IPV4}:3000/ \
           -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
           -d
-          docker pull REPOSITORYFRONT
+          docker pull wuttipat6509650716/savetofocus_frontend:latest
           docker run --name frontend_savetofocus savetofocus_frontend \
           -p 3000:3000 \
-          -e NEXT_PUBLIC_API_URL= http://${INSTANCE_PUBLIC_IPV4}:1337/\
+          -e NEXT_PUBLIC_API_URL= http://${INSTANCE_PUBLIC_IPV4}:1337/ \
           -e PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
           -d
           EOF
