@@ -118,6 +118,7 @@ jobs:
           -e NEXT_PUBLIC_API_URL=http://${INSTANCE_PUBLIC_IPV4}:1337 \
           -e PREVIEW_SECRET=${{ secrets.STRAPI_ADMIN_CLIENT_PREVIEW_SECRET }} \
           $REPOSITORYFRONT:latest
+          sudo docker restart frontend_savetofocus
           echo BackEnd http://${INSTANCE_PUBLIC_IPV4}:1337/
           echo FrontEnd http://${INSTANCE_PUBLIC_IPV4}:3000/
           EOF
