@@ -109,7 +109,6 @@ jobs:
           -e PORT=1337 \
           -e STRAPI_ADMIN_CLIENT_URL=http://${INSTANCE_PUBLIC_IPV4}:3000/ \
           -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=${{ secrets.STRAPI_ADMIN_CLIENT_PREVIEW_SECRET }} \
-          -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
           $REPOSITORY:latest
           echo "FRONTEND"
           sudo docker pull $REPOSITORYFRONT:latest
