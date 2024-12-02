@@ -18,4 +18,4 @@ RUN yarn seed
 EXPOSE 1337
 
 # Start the app
-CMD ["yarn", "develop"]
+CMD ["yarn", "start"]
