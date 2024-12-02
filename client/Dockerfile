@@ -21,6 +21,4 @@ RUN yarn build
 EXPOSE 3000
 
 # Start the app
-#CMD ["yarn", "start"]`
-
-CMD sh -c "echo \"NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL\" > .env && yarn start"
+CMD ["yarn", "start"]`
