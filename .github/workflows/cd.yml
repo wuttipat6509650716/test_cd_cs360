@@ -89,11 +89,7 @@ jobs:
             --output text)
           echo "Instance Public IPv4: $INSTANCE_PUBLIC_IPV4"
           echo "INSTANCE_PUBLIC_IPV4=$INSTANCE_PUBLIC_IPV4" >> $GITHUB_ENV
-
-          echo "ENV_GITHUB"
-          echo "DNS : $env.INSTANCE_PUBLIC_DNS"
-          echo "ipv4 : $env.INSTANCE_PUBLIC_IPV4"  
-          
+           
       - name: Connect server and pull image Backend
         env:
             PRIVATE_KEY: ${{ secrets.AWS_KEY_PEM }}
@@ -112,13 +108,15 @@ jobs:
           -e HOST=0.0.0.0 \
           -e PORT=1337 \
           -e STRAPI_ADMIN_CLIENT_URL=http://${INSTANCE_PUBLIC_IPV4}:3000/ \
-          -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
+          -e STRAPI_ADMIN_CLIENT_PREVIEW_SECRET=${{ secrets.STRAPI_ADMIN_CLIENT_PREVIEW_SECRET }} \
           $REPOSITORY:latest
           echo "FRONTEND"
           sudo docker pull $REPOSITORYFRONT:latest
           sudo docker run -d --name frontend_savetofocus \
           -p 3000:3000 \
           -e NEXT_PUBLIC_API_URL=http://${INSTANCE_PUBLIC_IPV4}:1337/ \
-          -e PREVIEW_SECRET=ARNFCb9zrC9ZHm5hZzCigWivD40icS4s \
+          -e PREVIEW_SECRET={{ secrets.STRAPI_ADMIN_CLIENT_PREVIEW_SECRET }} \
           $REPOSITORYFRONT:latest
+          echo BackEnd http://${INSTANCE_PUBLIC_IPV4}:1337/
+          echo FrontEnd http://${INSTANCE_PUBLIC_IPV4}:3000/
           EOF
