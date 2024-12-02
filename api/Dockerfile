@@ -10,6 +10,8 @@ COPY package*.json yarn.lock ./
 # Install dependencies
 RUN yarn install
 
+RUN yarn build
+
 # Copy the entire application source code
 COPY . .
 
@@ -18,4 +20,4 @@ RUN yarn seed
 EXPOSE 1337
 
 # Start the app
-CMD ["yarn", "develop"]
+CMD ["yarn", "start"]
