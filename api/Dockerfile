@@ -10,12 +10,13 @@ COPY package*.json yarn.lock ./
 # Install dependencies
 RUN yarn install
 
-RUN yarn build
-
 # Copy the entire application source code
 COPY . .
 
 RUN yarn seed
+
+RUN yarn build
+
 # Expose the port your app runs on
 EXPOSE 1337
 
